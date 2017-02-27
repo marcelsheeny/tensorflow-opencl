@@ -138,7 +138,8 @@ TEST(DirectSessionWithTrackingAllocTest, CostModelWarmup) {
   DirectSession* ds = static_cast<DirectSession*>(session.get());
   CostModelManager::CostModelMap cost_models;
   ds->ExportCostModels(&cost_models);
-  CHECK_EQ(cost_models.size(), 1);
+  ASSERT_GE(2, cost_models.size());
+  ASSERT_LE(1, cost_models.size());
   const CostModel* cm = (*cost_models.begin()).second;
   EXPECT_EQ(measure_steps, cm->GetUpdateTimes());
 }
