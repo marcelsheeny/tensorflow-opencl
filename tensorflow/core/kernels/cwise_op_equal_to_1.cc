@@ -35,7 +35,14 @@ REGISTER_KERNEL_BUILDER(Name("Equal")
 #endif
 
 #ifdef TENSORFLOW_USE_SYCL
-REGISTER2(BinaryOp, SYCL, "Equal", functor::equal_to, float, double);
+
+REGISTER_KERNEL_BUILDER(Name("Equal")
+                            .Device(DEVICE_SYCL)
+                            .HostMemory("x")
+                            .HostMemory("y")
+                            .HostMemory("z")
+                            .TypeConstraint<float>("T"),
+                        BinaryOp<CPUDevice, functor::equal_to<float>>);
 
 REGISTER_KERNEL_BUILDER(Name("Equal")
                             .Device(DEVICE_SYCL)
